@@ -723,7 +723,31 @@
             </div>
         </div>
     </footer>
+<!-- Add this script tag to the <head> of your index.html -->
+<script>
+// Add this to your main JavaScript file or create a separate redirect.js
 
+// Check if current URL matches shortcode pattern
+function handleShortcodeRedirect() {
+  const path = window.location.pathname;
+  const shortcodePattern = /^\/[a-zA-Z0-9]+$/;
+  
+  // Only redirect if we're on the production domain and path matches shortcode pattern
+  if (shortcodePattern.test(path)) {
+    // Don't redirect if we're on localhost (development)
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      // Redirect to your backend
+      const backendUrl = 'https://valid-platypus-tender.ngrok-free.app';
+      window.location.href = backendUrl + path;
+    }
+  }
+}
+
+// Run the check when page loads
+document.addEventListener('DOMContentLoaded', handleShortcodeRedirect);
+
+// Also run immediately in case DOMContentLoaded already fired
+handleShortcodeRedirect();</script>
 <script>
     let shortenedUrl = '';
 
@@ -798,7 +822,7 @@
                 throw new Error('Invalid response from server');
             }
 
-            shortenedUrl = `http://localhost:3000/${data.shortened_url}`;
+            shortenedUrl = `https://grt.surge.sh/${data.shortened_url}`;
             shortUrlDiv.textContent = shortenedUrl;
             result.classList.add('show');
             result.classList.add('animate-fade-in');
